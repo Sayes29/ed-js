@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobús</title>
+</head>
+<body>
+    <script>
+
+        class Conductor {
+            #nombre;
+            #licencia;
+ 
+            constructor(nombre, licencia) {
+                this.#nombre = nombre;
+                this.#licencia = licencia;
+            }
+
+            get nombre() { return this.#nombre; }
+            get licencia() { return this.#licencia; }
+
+            set nombre(n) { this.#nombre = n; }
+            set licencia(l) { this.#licencia = l; }
+
+            mostrarDatosConductor() {
+                console.log("  Conductor: " + this.#nombre + " | Licencia: " + this.#licencia);
+            }
+        }
+
+
+        class Autobus {
+            #capacidad;
+            #pasajeros;
+            #matricula;
+            #listadoConductores;
+
+            constructor(capacidad, pasajeros, matricula, listadoConductores) {
+                this.#capacidad = capacidad;
+                this.#pasajeros = pasajeros;
+                this.#matricula = matricula;
+                this.#listadoConductores = listadoConductores;
+            }
+//getters y setters
+            get capacidad() { return this.#capacidad; }
+            get pasajeros() { return this.#pasajeros; }
+            get matricula() { return this.#matricula; }
+            get listadoConductores() { return this.#listadoConductores; }
+
+            set capacidad(c) { this.#capacidad = c; }
+            set pasajeros(p) { this.#pasajeros = p; }
+            set matricula(m) { this.#matricula = m; }
+            set listadoConductores(lista) { this.#listadoConductores = lista; }
+
+            mostrarDatosAutobus() {
+                console.log("Matricula: " + this.#matricula);
+                console.log("Capacidad: " + this.#capacidad);
+                console.log("Pasajeros: " + this.#pasajeros);
+                console.log("Conductores:");
+                this.#listadoConductores.forEach(c => c.mostrarDatosConductor());
+            }
+
+            subir(numPasajeros) {
+                let hueco = this.#capacidad - this.#pasajeros;
+                if (numPasajeros > hueco) {
+                    console.log("No caben todos, suben solo " + hueco + " pasajeros.");
+                    this.#pasajeros = this.#capacidad;
+                } else {
+                    this.#pasajeros += numPasajeros;
+                    console.log("Subieron " + numPasajeros + " pasajeros. Ahora hay: " + this.#pasajeros);
+                }
+            }
+
+            bajar(numPasajeros) {
+                if (numPasajeros > this.#pasajeros) {
+                    console.log("No hay tantos, bajan todos: " + this.#pasajeros);
+                    this.#pasajeros = 0;
+                } else {
+                    this.#pasajeros -= numPasajeros;
+                    console.log("Bajaron " + numPasajeros + " pasajeros. Ahora hay: " + this.#pasajeros);
+                }
+            }
+
+            buscarConductor(licencia) {
+                let conductor = this.#listadoConductores.find(c => c.licencia === licencia);
+                if (conductor) {
+                    console.log("Encontrado: " + conductor.nombre + " (licencia " + licencia + ")");
+                    return true;
+                } else {
+                    console.log("No se encontro ningun conductor con licencia " + licencia);
+                    return false;
+                }
+            }
+        }
+
+
+        function main() {
+
+            let c1 = new Conductor("Lionel Messi", "A1234");
+            let c2 = new Conductor("Ángel Di María", "B5678");
+            let c3 = new Conductor("Rodrigo De Paul", "C9999");
+            let c4 = new Conductor("Julián Álvarez", "D4321");
+
+            let bus = new Autobus(50, 35, "ABC-1234", [c1, c2, c3, c4]);
+
+            bus.mostrarDatosAutobus();
+
+            
+            bus.subir(20);
+
+            bus.bajar(10);
+            bus.subir(5);
+
+            bus.bajar(100);
+
+            bus.buscarConductor("B5678");
+            bus.buscarConductor("Z0000");
+
+            bus.subir(0);
+
+            console.log("datos finales ");
+            bus.mostrarDatosAutobus();
+        }
+
+        main();
+
+    </script>
+</body>
+</html>
